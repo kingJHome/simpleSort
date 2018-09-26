@@ -20,6 +20,16 @@ int main(int argc,char *argv[]){
 				printf("\nafter sort:");
 				VisitSqList(sqarr, visitSList);
 				printf("\n");
+			}else if( strcmp(argv[1],"-ba")==0 ){
+				SqList sqarr = {NULL,0};
+                InitSqList(&sqarr, data);
+                printf("before sort:");
+                VisitSqList(sqarr, visitSList);
+                BInsertSort(&sqarr);
+                printf("\nafter sort:");
+                VisitSqList(sqarr, visitSList);
+                printf("\n");
+
 			}
 		}
 	}

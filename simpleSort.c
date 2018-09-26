@@ -59,7 +59,7 @@ void InitSqList(SqList *sq,char *elems){
 	}
 }
 
-//排序线性表
+//排序线性表(插入排序)
 void SortSqList(SqList *sq){
 	for(int i = 1; i < sq->length - 1; ++i){
 		sq->elemArray[0] = sq->elemArray[i];
@@ -71,6 +71,29 @@ void SortSqList(SqList *sq){
 			}
 		}
 		sq->elemArray[i] = sq->elemArray[0];
+	}
+}
+
+//折半插入排序
+void BInsertSort(SqList *sq){
+	for(int i = 2; i < sq->length; ++i){
+		sq->elemArray[0] = sq->elemArray[i];
+		int low = 1,high = i - 1;
+
+		while( low <= high ){
+			int mid = (low + high) / 2;
+
+			if( LT(sq->elemArray[0],sq->elemArray[mid]) ){
+				high = mid - 1;
+			}else{
+				low = mid + 1;
+			}
+		}
+
+		for(int j = i - 1; j >= high + 1; --j){
+			sq->elemArray[j+1] = sq->elemArray[j];
+		}
+		sq->elemArray[high+1] = sq->elemArray[0];
 	}
 }
 
