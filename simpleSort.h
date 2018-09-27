@@ -29,6 +29,9 @@ void SortSqList(SqList *sq);
 //折半插入排序
 void BInsertSort(SqList *sq);
 
+//二路查找排序
+void TwoPartInsertSort(SqList *sq);
+
 //访问sqlist
 void VisitSqList(SqList sq,visitSqList vsq);
 

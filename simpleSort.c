@@ -97,6 +97,57 @@ void BInsertSort(SqList *sq){
 	}
 }
 
+//二路查找排序
+void TwoPartInsertSort(SqList *sq){
+	int sqlen = sq->length - 1,
+		first = 0,last = 0,
+		*helpArray = (int*)malloc(sqlen * sizeof(int));
+	
+	helpArray[0] = sq->elemArray[1];
+
+	for(int i = 2; i < sq->length; ++i){
+		if( LT(sq->elemArray[i], helpArray[first]) ){
+			if( first==0 ){
+				first = sqlen - 1;
+			}else{
+				first -= 1;
+			}
+			helpArray[first] = sq->elemArray[i];
+		}else if( GT(sq->elemArray[i], helpArray[last]) ){
+			helpArray[++last] = sq->elemArray[i];
+		}else{//在最大值与最小值之间
+			if( LT(sq->elemArray[i], helpArray[0]) ){
+				for(int j = first; j <= sqlen; ++j){
+					if( j!=sqlen && GT(sq->elemArray[i], helpArray[j]) ){
+						helpArray[j-1] = helpArray[j];
+					}else{
+						helpArray[j-1] = sq->elemArray[i];
+						break;
+					}
+				}
+				--first;
+			}else{
+				for(int j = last; j >= 0; --j){
+					if( j>0 && LT(sq->elemArray[i], helpArray[j]) ){
+						helpArray[j+1] = helpArray[j];
+					}else{
+						helpArray[j+1] = sq->elemArray[i];
+						break;
+					}
+				}
+				++last;
+			}
+		}
+	}
+
+	//重排有序列表
+	int cur = 1;
+	for(int j = first; j != last; j = (j+1)%sqlen,++cur){
+		sq->elemArray[cur] = helpArray[j];
+	}
+	sq->elemArray[cur] = helpArray[last];
+}
+
 //访问sqlist
 void VisitSqList(SqList sq,visitSqList vsq){
 	for(int i = 1; i < sq.length; ++i){
