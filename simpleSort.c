@@ -155,6 +155,72 @@ void VisitSqList(SqList sq,visitSqList vsq){
 	}
 }
 
+//表插入排序
+void TableInsertSort(SLinkList *sll,int *arr,int len){
+	sll->array = (BLNode*)malloc((len+1) * sizeof(BLNode));
+
+	if( sll->array ){
+		sll->length = len + 1;
+		sll->array[0].next = 1;
+		sll->array[1].next = 0;
+		sll->array[1].data = arr[0];
+		
+		BLNode *array = sll->array;
+		for(int i = 1; i < len; ++i){
+			int cur = array[0].next;
+
+			array[i+1].data = arr[i];
+			//修改next值
+			if( LQ(arr[i], array[cur].data) ){
+				array[0].next = i + 1;
+				array[i+1].next = cur;
+			}else{
+				while( cur ){
+					int cnext = array[cur].next;
+
+					if( cnext && GT(arr[i], array[cur].data) && LQ(arr[i], array[cnext].data) ){
+						array[cur].next = i + 1;
+						array[i+1].next = cnext;
+						break;
+					}else if( !cnext ){
+						array[cur].next = i + 1;
+						array[i+1].next = cnext;
+					}
+					cur = array[cur].next;
+				}
+			}
+		}
+	}
+}
+
+//表位置调整
+void Arrange(SLinkList *sll){
+	int q,
+		p = sll->array[0].next;
+
+	for(int i = 1; i < sll->length; ++i){
+        while(p < i){
+			p = sll->array[p].next;
+		}
+
+		q = sll->array[p].next;
+		if( p != i){
+			BLNode temp = sll->array[i];
+			sll->array[i] = sll->array[p];
+			sll->array[p] = temp;
+			sll->array[i].next = p;
+		}
+		p = q;
+	}
+}
+
+//访问表
+void visitTableList(SLinkList sll,visitSqList vst){
+	for(int i = 1; i < sll.length; ++i){
+		vst(sll.array[i].data);
+	}
+}
+
 //初始化线性链表
 void InitElemLink(elemLink *header,char *elems){
 	visitAndSetData(elems," \n",header,setLinkData);
